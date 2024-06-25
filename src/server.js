@@ -6,6 +6,9 @@ import { env } from './utils/env.js';
 
 import { router } from './routers/recipes.js';
 
+import { notFoundHandler } from './utils/middlewares/notFoundHandler.js';
+import { errorHandler } from './utils/middlewares/errorHandler.js';
+
 const PORT = Number(env('PORT', '3000'));
 
 export const startServer = () => {
@@ -23,6 +26,10 @@ export const startServer = () => {
   );
 
   app.use(router);
+
+  app.use('*', notFoundHandler);
+
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

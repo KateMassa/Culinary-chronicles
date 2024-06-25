@@ -1,5 +1,7 @@
 import { getAllRecipes, getRecipeById } from '../services/recipes.js';
 
+import createHttpError from 'http-errors';
+
 export const getAllRecipesController = async (req, res) => {
   const recipes = await getAllRecipes();
 
@@ -10,14 +12,12 @@ export const getAllRecipesController = async (req, res) => {
   });
 };
 
-export const getRecipeByIdController = async (req, res) => {
+export const getRecipeByIdController = async (req, res, next) => {
   const { recipeId } = req.params;
   const recipe = await getRecipeById(recipeId);
 
   if (!recipe) {
-    res.status(404).json({
-      message: 'Recipe not found',
-    });
+    next(createHttpError(404, 'Recipe not found'));
     return;
   }
 
