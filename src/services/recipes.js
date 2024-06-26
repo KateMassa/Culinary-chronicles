@@ -5,8 +5,8 @@ export const getAllRecipes = async () => {
   return recipes;
 };
 
-export const getRecipeById = async (payload) => {
-  const recipe = await RecipesCollection.findOne(payload);
+export const getRecipeById = async (recipeId) => {
+  const recipe = await RecipesCollection.findById(recipeId);
   return recipe;
 };
 
