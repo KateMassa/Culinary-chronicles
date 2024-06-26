@@ -1,23 +1,5 @@
 import { model, Schema } from 'mongoose';
 
-const IngredientSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  amount: {
-    type: String,
-    required: true,
-  },
-});
-
-const StepSchema = new Schema({
-  description: {
-    type: String,
-    required: true,
-  },
-});
-
 const RecipeSchema = new Schema({
   title: {
     type: String,
@@ -27,8 +9,26 @@ const RecipeSchema = new Schema({
     type: String,
     required: true,
   },
-  ingredients: [IngredientSchema],
-  steps: [StepSchema],
+  ingredients: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      amount: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  steps: [
+    {
+      description: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   cookingTime: {
     type: Number,
     required: true,
