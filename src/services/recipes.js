@@ -17,7 +17,7 @@ export const createRecipe = async (payload) => {
 
 export const updateRecipe = async (recipeId, payload, options = {}) => {
   const rawResult = await RecipesCollection.findOneAndUpdate(
-    { id: recipeId },
+    { _id: recipeId },
     payload,
     {
       new: true,
@@ -34,6 +34,6 @@ export const updateRecipe = async (recipeId, payload, options = {}) => {
 };
 
 export const deleteRecipe = async (recipeId) => {
-  const recipe = await RecipesCollection.findOneAndDelete({ id: recipeId });
+  const recipe = await RecipesCollection.findOneAndDelete({ _id: recipeId });
   return recipe;
 };
