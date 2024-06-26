@@ -1,11 +1,12 @@
 {
   "name": "culinary-chronicles",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "scr/index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
     "lint": "eslint src/**/*.js",
-    "start": "node ./src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "Kateryna Massa <catherineorlova27@gmail.com>",
