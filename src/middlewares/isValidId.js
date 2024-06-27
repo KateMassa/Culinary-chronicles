@@ -1,11 +1,11 @@
 import { isValidObjectId } from 'mongoose';
 
-import HttpError from './HttpError.js';
+import createHttpError from 'http-errors';
 
 export const isValidId = (req, res, next) => {
-  const { id } = req.params;
-  if (!isValidObjectId(id)) {
-    next(HttpError(404, 'Not found'));
+  const { recipeId } = req.params;
+  if (!recipeId || !isValidObjectId(recipeId)) {
+    next(createHttpError(404, 'Not found'));
   }
 
   next();

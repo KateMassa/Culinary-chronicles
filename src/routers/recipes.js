@@ -23,7 +23,7 @@ router.get('/recipes', ctrlWrapper(getAllRecipesController));
 
 router.get(
   '/recipes/:recipeId',
-  isValidId(),
+  isValidId,
   ctrlWrapper(getRecipeByIdController),
 );
 
@@ -35,21 +35,21 @@ router.post(
 
 router.put(
   '/recipes/:recipeId',
-  isValidId(),
+  isValidId,
   validateBody(updateRecipeSchema),
   ctrlWrapper(upsertRecipeController),
 );
 
 router.patch(
   '/recipes/:recipeId',
-  isValidId(),
+  isValidId,
   validateBody(updateRecipeSchema),
   ctrlWrapper(patchRecipeController),
 );
 
 router.delete(
   '/recipes/:recipeId',
-  isValidId(),
+  isValidId,
   ctrlWrapper(deleteRecipeController),
 );
 
