@@ -35,16 +35,22 @@ router.post(
 
 router.put(
   '/recipes/:recipeId',
+  isValidId(),
   validateBody(updateRecipeSchema),
   ctrlWrapper(upsertRecipeController),
 );
 
 router.patch(
   '/recipes/:recipeId',
+  isValidId(),
   validateBody(updateRecipeSchema),
   ctrlWrapper(patchRecipeController),
 );
 
-router.delete('/recipes/:recipeId', ctrlWrapper(deleteRecipeController));
+router.delete(
+  '/recipes/:recipeId',
+  isValidId(),
+  ctrlWrapper(deleteRecipeController),
+);
 
 export default router;
