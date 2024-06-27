@@ -1,22 +1,28 @@
 import { RecipesCollection } from '../db/models/recipe.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import { SORT_ORDER } from '../constants/index.js';
 
-export const getAllRecipes = async ({ page, perPage }) => {
+export const getAllRecipes = async ({
+  page = 1,
+  perPage = 10,
+  sortOrder = SORT_ORDER.ASC,
+  sortBy = 'title',
+}) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
   const recipesQuery = RecipesCollection.find();
-  const recipesCount = await RecipesCollection.find()
-    .merge(recipesQuery)
-    .countDocuments();
 
-  const recipes = await recipesQuery.skip(skip).limit(limit).exec;
+  const [recipesCount, recipes] = await Promise.all([
+    RecipesCollection.find().merge(recipesQuery).countDocuments(),
+    recipesQuery
+      .skip(skip)
+      .limit(limit)
+      .sort({ [sortBy]: sortOrder })
+      .exec(),
+  ]);
 
-  const paginationData = await calculatePaginationData(
-    recipesCount,
-    perPage,
-    page,
-  );
+  const paginationData = calculatePaginationData(recipesCount, perPage, page);
 
   return {
     data: recipes,

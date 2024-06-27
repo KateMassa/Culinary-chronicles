@@ -9,10 +9,12 @@ import {
 import createHttpError from 'http-errors';
 
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getAllRecipesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  const recipes = await getAllRecipes({ page, perPage });
+  const { sortOrder, sortBy } = parseSortParams(req.query);
+  const recipes = await getAllRecipes({ page, perPage, sortOrder, sortBy });
 
   res.json({
     status: 200,
