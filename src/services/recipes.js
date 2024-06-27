@@ -15,6 +15,13 @@ export const createRecipe = async (payload) => {
   return recipe;
 };
 
+export const deleteRecipe = async (recipeId) => {
+  const recipe = await RecipesCollection.findOneAndDelete({
+    _id: recipeId,
+  });
+  return recipe;
+};
+
 export const updateRecipe = async (recipeId, payload, options = {}) => {
   const rawResult = await RecipesCollection.findOneAndUpdate(
     { _id: recipeId },
@@ -25,15 +32,11 @@ export const updateRecipe = async (recipeId, payload, options = {}) => {
       ...options,
     },
   );
-  if (!rawResult || !rawResult.value) return null;
-
+  if (!rawResult || !rawResult.value) {
+    return null;
+  }
   return {
-    student: rawResult.value,
+    recipe: rawResult,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
-};
-
-export const deleteRecipe = async (recipeId) => {
-  const recipe = await RecipesCollection.findOneAndDelete({ _id: recipeId });
-  return recipe;
 };
