@@ -8,8 +8,11 @@ import {
 
 import createHttpError from 'http-errors';
 
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+
 export const getAllRecipesController = async (req, res) => {
-  const recipes = await getAllRecipes();
+  const { page, perPage } = parsePaginationParams(req.query);
+  const recipes = await getAllRecipes({ page, perPage });
 
   res.json({
     status: 200,
