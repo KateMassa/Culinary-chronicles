@@ -7,11 +7,25 @@ export const getAllRecipes = async ({
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
   sortBy = 'title',
+  filter = {},
 }) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
   const recipesQuery = RecipesCollection.find();
+
+  if (filter.title) {
+    recipesQuery.where('title').equals(filter.title);
+  }
+  if (filter.ingredients) {
+    recipesQuery.where('ingredients').equals(filter.ingredients);
+  }
+  if (filter.cookingTime) {
+    recipesQuery.where('cookingTime').equals(filter.cookingTime);
+  }
+  if (filter.createdAt) {
+    recipesQuery.where('createdAt').equals(filter.createdAt);
+  }
 
   const [recipesCount, recipes] = await Promise.all([
     RecipesCollection.find().merge(recipesQuery).countDocuments(),
