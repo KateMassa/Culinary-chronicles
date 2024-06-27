@@ -15,12 +15,17 @@ import {
   createRecipeSchema,
   updateRecipeSchema,
 } from '../validation/recipes.js';
+import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
 router.get('/recipes', ctrlWrapper(getAllRecipesController));
 
-router.get('/recipes/:recipeId', ctrlWrapper(getRecipeByIdController));
+router.get(
+  '/recipes/:recipeId',
+  isValidId(),
+  ctrlWrapper(getRecipeByIdController),
+);
 
 router.post(
   '/recipes',
