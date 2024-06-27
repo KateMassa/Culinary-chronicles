@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import {
-  getAllRecipesController,
+  getRecipesController,
   getRecipeByIdController,
   createRecipeController,
   upsertRecipeController,
@@ -19,7 +19,7 @@ import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
-router.get('/recipes', ctrlWrapper(getAllRecipesController));
+router.get('/recipes', ctrlWrapper(getRecipesController));
 
 router.get(
   '/recipes/:recipeId',
