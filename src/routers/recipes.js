@@ -16,21 +16,31 @@ import {
   updateRecipeSchema,
 } from '../validation/recipes.js';
 import { isValidId } from '../middlewares/isValidId.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
 
-router.get('/', ctrlWrapper(getRecipesController));
+router.use(authenticate);
 
-router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
+router.get('/', authenticate, ctrlWrapper(getRecipesController));
+
+router.get(
+  '/:recipeId',
+  authenticate,
+  isValidId,
+  ctrlWrapper(getRecipeByIdController),
+);
 
 router.post(
   '',
+  authenticate,
   validateBody(createRecipeSchema),
   ctrlWrapper(createRecipeController),
 );
 
 router.put(
   '/:recipeId',
+  authenticate,
   isValidId,
   validateBody(updateRecipeSchema),
   ctrlWrapper(upsertRecipeController),
@@ -38,11 +48,17 @@ router.put(
 
 router.patch(
   '/:recipeId',
+  authenticate,
   isValidId,
   validateBody(updateRecipeSchema),
   ctrlWrapper(patchRecipeController),
 );
 
-router.delete('/:recipeId', isValidId, ctrlWrapper(deleteRecipeController));
+router.delete(
+  '/:recipeId',
+  authenticate,
+  isValidId,
+  ctrlWrapper(deleteRecipeController),
+);
 
 export default router;
