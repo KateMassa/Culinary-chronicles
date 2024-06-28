@@ -19,38 +19,30 @@ import { isValidId } from '../middlewares/isValidId.js';
 
 const router = Router();
 
-router.get('/recipes', ctrlWrapper(getRecipesController));
+router.get('/', ctrlWrapper(getRecipesController));
 
-router.get(
-  '/recipes/:recipeId',
-  isValidId,
-  ctrlWrapper(getRecipeByIdController),
-);
+router.get('/:recipeId', isValidId, ctrlWrapper(getRecipeByIdController));
 
 router.post(
-  '/recipes',
+  '',
   validateBody(createRecipeSchema),
   ctrlWrapper(createRecipeController),
 );
 
 router.put(
-  '/recipes/:recipeId',
+  '/:recipeId',
   isValidId,
   validateBody(updateRecipeSchema),
   ctrlWrapper(upsertRecipeController),
 );
 
 router.patch(
-  '/recipes/:recipeId',
+  '/:recipeId',
   isValidId,
   validateBody(updateRecipeSchema),
   ctrlWrapper(patchRecipeController),
 );
 
-router.delete(
-  '/recipes/:recipeId',
-  isValidId,
-  ctrlWrapper(deleteRecipeController),
-);
+router.delete('/:recipeId', isValidId, ctrlWrapper(deleteRecipeController));
 
 export default router;
