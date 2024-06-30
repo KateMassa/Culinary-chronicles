@@ -17,6 +17,7 @@ import {
 } from '../validation/recipes.js';
 import { isValidId } from '../middlewares/isValidId.js';
 import { authenticate } from '../middlewares/authenticate.js';
+import { upload } from '../middlewares/multer.js';
 
 const router = Router();
 
@@ -34,6 +35,7 @@ router.get(
 router.post(
   '',
   authenticate,
+  upload.single('photo'),
   validateBody(createRecipeSchema),
   ctrlWrapper(createRecipeController),
 );
@@ -42,6 +44,7 @@ router.put(
   '/:recipeId',
   authenticate,
   isValidId,
+  upload.single('photo'),
   validateBody(updateRecipeSchema),
   ctrlWrapper(upsertRecipeController),
 );
@@ -50,6 +53,7 @@ router.patch(
   '/:recipeId',
   authenticate,
   isValidId,
+  upload.single('photo'),
   validateBody(updateRecipeSchema),
   ctrlWrapper(patchRecipeController),
 );

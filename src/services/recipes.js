@@ -44,8 +44,8 @@ export const getAllRecipes = async ({
   };
 };
 
-export const getRecipeById = async (recipeId) => {
-  const recipe = await RecipesCollection.findById(recipeId);
+export const getRecipeById = async (payload) => {
+  const recipe = await RecipesCollection.findOne(payload);
   return recipe;
 };
 
@@ -54,16 +54,16 @@ export const createRecipe = async (payload) => {
   return recipe;
 };
 
-export const deleteRecipe = async (recipeId) => {
+export const deleteRecipe = async (authRecipeId) => {
   const recipe = await RecipesCollection.findOneAndDelete({
-    _id: recipeId,
+    _id: authRecipeId,
   });
   return recipe;
 };
 
-export const updateRecipe = async (recipeId, payload, options = {}) => {
+export const updateRecipe = async (authRecipeId, payload, options = {}) => {
   const rawResult = await RecipesCollection.findOneAndUpdate(
-    { _id: recipeId },
+    { _id: authRecipeId },
     payload,
     {
       new: true,

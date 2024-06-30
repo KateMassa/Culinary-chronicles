@@ -7,10 +7,14 @@ import {
 } from '../services/recipes.js';
 
 import createHttpError from 'http-errors';
+import { env } from '../utils/env.js';
 
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getRecipesController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
@@ -18,6 +22,7 @@ export const getRecipesController = async (req, res) => {
   const filter = parseFilterParams(req.query);
 
   const recipes = await getAllRecipes({
+    userId: req.user._id,
     page,
     perPage,
     sortOrder,
@@ -32,23 +37,52 @@ export const getRecipesController = async (req, res) => {
   });
 };
 
-export const getRecipeByIdController = async (req, res, next) => {
+const setAuthRecipeId = (req) => {
+  let authRecipeId = {};
   const { recipeId } = req.params;
-  const recipe = await getRecipeById(recipeId);
+  const userId = req.user._id;
+  if (recipeId) {
+    authRecipeId = { _id: recipeId };
+  }
+  if (userId) {
+    authRecipeId = { ...authRecipeId, userId: userId };
+  }
+  return authRecipeId;
+};
+
+export const getRecipeByIdController = async (req, res, next) => {
+  const authRecipeId = setAuthRecipeId(req);
+  const recipe = await getRecipeById(authRecipeId);
 
   if (!recipe) {
     return next(createHttpError(404, 'Recipe not found'));
   }
 
-  res.json({
+  res.status(200).json({
     status: 200,
-    message: `Successfully found recipe with id ${recipeId}!`,
+    message: `Successfully found recipe with id ${authRecipeId}!`,
     data: recipe,
   });
 };
 
 export const createRecipeController = async (req, res) => {
-  const recipe = await createRecipe(req.body);
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const recipe = await createRecipe({
+    userId: req.user._id,
+    photo: photoUrl,
+    ...req.body,
+  });
+
   res.status(201).json({
     status: 201,
     message: 'Successfully created recipe',
@@ -57,8 +91,8 @@ export const createRecipeController = async (req, res) => {
 };
 
 export const upsertRecipeController = async (req, res, next) => {
-  const { recipeId } = req.params;
-  const result = await updateRecipe(recipeId, req.body, { upsert: true });
+  const authRecipeId = setAuthRecipeId(req);
+  const result = await updateRecipe(authRecipeId, req.body, { upsert: true });
   if (!result) {
     next(createHttpError(404, 'Recipe not found'));
     return;
@@ -67,13 +101,27 @@ export const upsertRecipeController = async (req, res, next) => {
   res.status(status).json({
     status,
     message: 'Successfully updated recipe',
-    data: result.student,
+    data: result.recipe,
   });
 };
 
 export const patchRecipeController = async (req, res, next) => {
-  const { recipeId } = req.params;
-  const result = await updateRecipe(recipeId, req.body);
+  const photo = req.file;
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
+  const authRecipeId = setAuthRecipeId(req);
+  const result = await updateRecipe(authRecipeId, {
+    photo: photoUrl,
+    ...req.body,
+  });
   if (!result) {
     next(createHttpError(404, 'Recipe not found'));
     return;
@@ -86,8 +134,8 @@ export const patchRecipeController = async (req, res, next) => {
 };
 
 export const deleteRecipeController = async (req, res, next) => {
-  const { recipeId } = req.params;
-  const recipe = await deleteRecipe(recipeId);
+  const authRecipeId = setAuthRecipeId(req);
+  const recipe = await deleteRecipe(authRecipeId);
   if (!recipe) {
     next(createHttpError(404, 'Recipe not found'));
     return;
