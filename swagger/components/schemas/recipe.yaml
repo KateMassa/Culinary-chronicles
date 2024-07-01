@@ -1,0 +1,65 @@
+type: object
+required:
+  - _id
+  - title
+  - description
+  - ingredients
+  - steps
+  - cookingTime
+  - author
+properties:
+  _id:
+    description: "Recipe's id"
+    type: string
+    example: 65e4decdd286b30065d54af9
+  title:
+    description: "Recipe's title"
+    type: string
+    example: 'Tiramisù'
+  description:
+    description: "Recipe's description"
+    type: string
+    example: 'A classic Italian dessert made with coffee, mascarpone cheese, and ladyfingers.'
+  ingredients:
+    description: 'Ingredients for the recipe'
+    type: array
+    items:
+      type: object
+      required:
+        - name
+        - amount
+      properties:
+        name:
+          type: string
+          description: The name of the ingredient
+        amount:
+          type: string
+          description: The amount of the ingredient
+  steps:
+    description: 'Steps for the recipe'
+    type: array
+    items:
+      type: object
+      required:
+        - description
+      properties:
+        description:
+          type: string
+          description: A description of the step
+  cookingTime:
+    type: number
+    description: The cooking time in minutes
+    example: 30
+  author:
+    type: string
+    description: The author of the recipe
+    example: 'Chef Vegan'
+  createdAt:
+    type: string
+    format: date-time
+    description: The date and time when the recipe was created
+    example: '2024-06-23T05:52:08.998Z'
+  photo:
+    description: "Link to recipe's photo"
+    type: string
+    example: 'https://res.cloudinary.com/uqwgdu/image/upload/image.png'

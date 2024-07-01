@@ -1,0 +1,89 @@
+tags:
+  - Auth
+summary: Register a new user
+operationId: registerUser
+description: register a new user
+security:
+  - bearerAuth: []
+
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - username
+          - email
+          - password
+        properties:
+          name:
+            description: username
+            type: string
+            example: Dani Banani
+          email:
+            type: string
+            format: email
+            example: danibanani@example.com
+          password:
+            type: string
+            format: password
+            example: securepassword
+responses:
+  '201':
+    description: Successfully registered a user!
+    content:
+      application/json:
+        schema:
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully registered a user!
+            data:
+              type: object
+              properties:
+                name:
+                  description: New user name
+                  type: string
+                  example: Dani Banani
+                email:
+                  description: New user email
+                  type: string
+                  example: danibanani@example.com
+                _id:
+                  description: New user id (auto-generated)
+                  type: string
+                  example: 5f9f1c0b0b0b0b0b0b0b0b0b
+                createdAt:
+                  description: Timestamp (auto-generated)
+                  type: string
+                  example: 2024-06-16T11:57:49.764Z
+                updatedAt:
+                  description: Timestamp (auto-generated)
+                  type: string
+                  example: 2024-06-16T11:57:49.764Z
+  '400':
+    $ref: ../../components/responses/400.yaml
+  '409':
+    description: User is already registered!
+    content:
+      application/json:
+        schema:
+          properties:
+            status:
+              type: integer
+              example: 409
+            message:
+              type: string
+              example: ConflictError
+            data:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Conflict. User is already registered!
+  '500':
+    $ref: ../../components/responses/500.yaml

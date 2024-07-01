@@ -1,0 +1,129 @@
+tags:
+  - Recipes
+summary: Update recipe
+operationId: updateRecipe
+description: Partially update recipe's information
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: recipeId
+    required: true
+    schema:
+      type: string
+      example: '6655a67a37bc0571c96d9655'
+requestBody:
+  description: Recipe's properties can be updated - "title", "description", "ingredients", "steps", "cookingTime", "author", "photo"
+  required: true
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          title:
+            type: string
+          description:
+            type: string
+          ingredients:
+            type: string
+          steps:
+            type: string
+          cookingTime:
+            type: number
+          author:
+            type: string
+          photo:
+            description: Recipe's photo file (*.jpg, *.png, etc.)
+            type: string
+            format: binary
+      encoding:
+        photo:
+          contentType: image/*
+      examples:
+        example1:
+          summary: Example with photo
+          value:
+            title: 'My Tiramisù'
+            description: 'Vegan tiramisù'
+            ingredients: 'Coffee, Sugar, Cocoa, Vegan Philadelphia, Savoiardi'
+            steps: 'Brew coffee, mix cheese, layer ingredients, chill in fridge'
+            cookingTime: 30
+            author: 'Chef Vegan'
+            photo: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAMCAgMCAgMDAwMEAwMEBQIDAQA'
+    application/json:
+      schema:
+        type: object
+        properties:
+          title:
+            type: string
+          description:
+            type: string
+          ingredients:
+            type: string
+          steps:
+            type: string
+          cookingTime:
+            type: number
+          author:
+            type: string
+          photo:
+            type: string
+            format: binary
+responses:
+  '200':
+    description: Recipe updated successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            _id:
+              description: "Recipe's id"
+              type: string
+              example: 6655a67a37bc0571c96d9655
+            title:
+              description: "Recipe's title"
+              type: string
+              example: 'My Tiramisù'
+            description:
+              description: "Recipe's description"
+              type: string
+              example: 'Vegan tiramisù'
+            ingredients:
+              description: "Recipe's ingredients"
+              type: string
+              example: 'Coffee, Sugar, Cocoa, Vegan Philadelphia, Savoiardi'
+            steps:
+              description: "Recipe's steps"
+              type: string
+              example: 'Brew coffee, mix cheese, layer ingredients, chill in fridge'
+            cookingTime:
+              description: "Recipe's cooking time"
+              type: number
+              example: 30
+            author:
+              description: "Recipe's author"
+              type: string
+              example: 'Chef Vegan'
+            photo:
+              description: "Link to recipe's photo"
+              type: string
+              example: 'https://res.cloudinary.com/Recipes-app/image/upload/v1655657308/lpzhpmvrcnsa83lc25ux.jpg'
+            userId:
+              description: "Recipe's user id (internal application data)"
+              type: string
+              example: '6655a67a37bc0571c96d9655'
+            createdAt:
+              description: Database timestamp (auto-generated)
+              type: string
+              format: date-time
+              example: '2024-06-23T05:52:08.998Z'
+            updatedAt:
+              description: Database timestamp (auto-generated)
+              type: string
+              format: date-time
+              example: '2024-06-23T05:52:08.998Z'
+  '401':
+    $ref: '#/components/responses/Unauthorized'
+  '404':
+    $ref: '#/components/responses/NotFound'

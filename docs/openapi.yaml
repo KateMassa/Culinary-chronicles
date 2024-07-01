@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Cook-book App "Culinary chronicles"
+  license:
+    name: Apache 2.0
+    url: <http://www.apache.org/licenses/LICENSE-2.0.html>
+  description: >
+    This is a documentation of cook-book app
+tags:
+  - name: Recipes
+    description: Operations about recipes.
+  - name: Auth
+    description: Auth operations.
+servers:
+  - url: https://culinary-chronicles-88wp.onrender.com
+
+paths:
+   /auth/register:
+    post:
+      $ref: '../swagger/paths/auth/register.yaml'
+  /auth/login:
+    post:
+      $ref: '../swagger/paths/auth/login.yaml'
+  /auth/refresh:
+    post:
+      $ref: '../swagger/paths/auth/refresh_token.yaml'
+  /auth/send-reset-email:
+    post:
+      $ref: '../swagger/paths/auth/send-reset-email.yaml'
+  /auth/reset-password:
+    post:
+      $ref: '../swagger/paths/auth/reset-password.yaml'
+  /auth/logout:
+    post:
+      $ref: '../swagger/paths/auth/logout.yaml'
+  /recipes:
+    post:
+      $ref: '../swagger/paths/recipes/post.yaml'
+    get:
+      $ref: '../swagger/paths/recipes/get.yaml'
+  /recipes/{recipeId}:
+    get:
+      $ref: '../swagger/paths/recipes/{recipeId}/get.yaml'
+    patch:
+      $ref: '../swagger/paths/recipes/{recipeId}/patch.yaml'
+    delete:
+      $ref: '../swagger/paths/recipes/{recipeId}/delete.yaml'
+components:
+   schemas:
+    Recipe:
+      $ref: '../swagger/components/schemas/recipe.yaml'
+ 
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
