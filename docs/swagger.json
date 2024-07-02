@@ -1,1 +1,1264 @@
-{}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Cook-book App \"Culinary chronicles\"",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "description": "This is a documentation of cook-book app\n"
+  },
+  "servers": [
+    {
+      "url": "https://culinary-chronicles-88wp.onrender.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Recipes",
+      "description": "Operations about recipes."
+    },
+    {
+      "name": "Auth",
+      "description": "Auth operations."
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register a new user",
+        "operationId": "registerUser",
+        "description": "register a new user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "username",
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "name": {
+                    "description": "username",
+                    "type": "string",
+                    "example": "Dani Banani"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "danibanani@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "securepassword"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully registered a user!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully registered a user!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "description": "New user name",
+                          "type": "string",
+                          "example": "Dani Banani"
+                        },
+                        "email": {
+                          "description": "New user email",
+                          "type": "string",
+                          "example": "danibanani@example.com"
+                        },
+                        "_id": {
+                          "description": "New user id (auto-generated)",
+                          "type": "string",
+                          "example": "5f9f1c0b0b0b0b0b0b0b0b0b"
+                        },
+                        "createdAt": {
+                          "description": "Timestamp (auto-generated)",
+                          "type": "string",
+                          "example": "2024-06-16T11:57:49.764Z"
+                        },
+                        "updatedAt": {
+                          "description": "Timestamp (auto-generated)",
+                          "type": "string",
+                          "example": "2024-06-16T11:57:49.764Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "409": {
+            "description": "User is already registered!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 409
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "ConflictError"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Conflict. User is already registered!"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Login user",
+        "operationId": "loginUser",
+        "description": "login user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "danibanani@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "securepassword"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully logged in!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh access token",
+        "description": "Refresh access token",
+        "operationId": "refreshToken",
+        "security": [],
+        "parameters": [
+          {
+            "name": "refresh_token",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "example": "<refresh_token>"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully refreshed access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully refreshed access token"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "access_token": {
+                          "type": "string",
+                          "example": "+264564cnkvjguTLJFRS934"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Session token expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Session token expired"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Session token expired"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/send-reset-email": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Send email with reset password link",
+        "operationId": "sendResetEmail",
+        "description": "Send email with reset password link",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "user email",
+                    "example": "danibanani@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully sent a reset email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Reset password email has been successfully sent."
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/400"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset password",
+        "operationId": "resetPassword",
+        "description": "Reset password",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "password",
+                  "token"
+                ],
+                "properties": {
+                  "password": {
+                    "description": "Password",
+                    "type": "string",
+                    "example": "rubacuori2023"
+                  },
+                  "token": {
+                    "description": "Token",
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password has been successfully reset!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password has been successfully reset!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "Empty object",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token is expired or invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 401
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "UnauthorizedError"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Token is expired or invalid."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 404
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "NotFoundError"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "message"
+                      ],
+                      "properties": {
+                        "message": {
+                          "description": "Error message",
+                          "type": "string",
+                          "example": "User not found"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Logout user",
+        "operationId": "logoutUser",
+        "description": "logout user",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content - User was successfully logged out"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "500": {
+            "$ref": "#/components/responses/500"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Create recipe",
+        "operationId": "createRecipe",
+        "description": "Create a recipe with payload",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "ingredients",
+                  "steps",
+                  "cookingTime",
+                  "author",
+                  "photo"
+                ],
+                "properties": {
+                  "title": {
+                    "description": "Recipe's title",
+                    "type": "string",
+                    "example": "Tiramisù"
+                  },
+                  "description": {
+                    "description": "Recipe's description",
+                    "type": "string",
+                    "example": "Brew 300 ml of coffee"
+                  },
+                  "ingredients": {
+                    "description": "Ingredients for the recipe",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "amount"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The name of the ingredient"
+                        },
+                        "amount": {
+                          "type": "string",
+                          "description": "The amount of the ingredient"
+                        }
+                      }
+                    }
+                  },
+                  "steps": {
+                    "description": "Steps for the recipe",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "description"
+                      ],
+                      "properties": {
+                        "description": {
+                          "type": "string",
+                          "description": "A description of the step"
+                        }
+                      }
+                    }
+                  },
+                  "cookingTime": {
+                    "type": "number",
+                    "description": "The cooking time in minutes"
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "The author of the recipe"
+                  },
+                  "createdAt": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The date and time when the recipe was created"
+                  },
+                  "photo": {
+                    "description": "Link to recipe's photo",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Creates a recipe",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created a recipe!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/recipe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get all Recipes",
+        "operationId": "getRecipes",
+        "description": "Get all Recipes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "_id",
+                "title",
+                "ingredients",
+                "cookingTime",
+                "createdAt",
+                "isFavorite",
+                "author"
+              ]
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ]
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get all Recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found Recipes!"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/recipe"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}": {
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipe by id",
+        "operationId": "getRecipe",
+        "description": "Get recipe by id",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "65ca67e7ae7f10c88b598384"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get recipe by id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully found recipe with id 65ca67e7ae7f10c88b598384!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/recipe"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Update recipe",
+        "operationId": "updateRecipe",
+        "description": "Partially update recipe's information",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6655a67a37bc0571c96d9655"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Recipe's properties can be updated - \"title\", \"description\", \"ingredients\", \"steps\", \"cookingTime\", \"author\", \"photo\"",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "ingredients": {
+                    "type": "string"
+                  },
+                  "steps": {
+                    "type": "string"
+                  },
+                  "cookingTime": {
+                    "type": "number"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "photo": {
+                    "description": "Recipe's photo file (*.jpg, *.png, etc.)",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "photo": {
+                  "contentType": "image/*"
+                }
+              },
+              "examples": {
+                "example1": {
+                  "summary": "Example with photo",
+                  "value": {
+                    "title": "My Tiramisù",
+                    "description": "Vegan tiramisù",
+                    "ingredients": "Coffee, Sugar, Cocoa, Vegan Philadelphia, Savoiardi",
+                    "steps": "Brew coffee, mix cheese, layer ingredients, chill in fridge",
+                    "cookingTime": 30,
+                    "author": "Chef Vegan",
+                    "photo": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAMCAgMCAgMDAwMEAwMEBQIDAQA"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "ingredients": {
+                    "type": "string"
+                  },
+                  "steps": {
+                    "type": "string"
+                  },
+                  "cookingTime": {
+                    "type": "number"
+                  },
+                  "author": {
+                    "type": "string"
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recipe updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "description": "Recipe's id",
+                      "type": "string",
+                      "example": "6655a67a37bc0571c96d9655"
+                    },
+                    "title": {
+                      "description": "Recipe's title",
+                      "type": "string",
+                      "example": "My Tiramisù"
+                    },
+                    "description": {
+                      "description": "Recipe's description",
+                      "type": "string",
+                      "example": "Vegan tiramisù"
+                    },
+                    "ingredients": {
+                      "description": "Recipe's ingredients",
+                      "type": "string",
+                      "example": "Coffee, Sugar, Cocoa, Vegan Philadelphia, Savoiardi"
+                    },
+                    "steps": {
+                      "description": "Recipe's steps",
+                      "type": "string",
+                      "example": "Brew coffee, mix cheese, layer ingredients, chill in fridge"
+                    },
+                    "cookingTime": {
+                      "description": "Recipe's cooking time",
+                      "type": "number",
+                      "example": 30
+                    },
+                    "author": {
+                      "description": "Recipe's author",
+                      "type": "string",
+                      "example": "Chef Vegan"
+                    },
+                    "photo": {
+                      "description": "Link to recipe's photo",
+                      "type": "string",
+                      "example": "https://res.cloudinary.com/Recipes-app/image/upload/v1655657308/lpzhpmvrcnsa83lc25ux.jpg"
+                    },
+                    "userId": {
+                      "description": "Recipe's user id (internal application data)",
+                      "type": "string",
+                      "example": "6655a67a37bc0571c96d9655"
+                    },
+                    "createdAt": {
+                      "description": "Database timestamp (auto-generated)",
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-06-23T05:52:08.998Z"
+                    },
+                    "updatedAt": {
+                      "description": "Database timestamp (auto-generated)",
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-06-23T05:52:08.998Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Delete recipe",
+        "operationId": "deleteRecipe",
+        "description": "Delete recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recipeId",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "63b9c4d7e0f2a6cf8a8f8b8d"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content - The recipe was successfully deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/401"
+          },
+          "404": {
+            "$ref": "#/components/responses/404"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Recipe": {
+        "$ref": "#/components/schemas/recipe"
+      },
+      "recipe": {
+        "type": "object",
+        "required": [
+          "_id",
+          "title",
+          "description",
+          "ingredients",
+          "steps",
+          "cookingTime",
+          "author"
+        ],
+        "properties": {
+          "_id": {
+            "description": "Recipe's id",
+            "type": "string",
+            "example": "65e4decdd286b30065d54af9"
+          },
+          "title": {
+            "description": "Recipe's title",
+            "type": "string",
+            "example": "Tiramisù"
+          },
+          "description": {
+            "description": "Recipe's description",
+            "type": "string",
+            "example": "A classic Italian dessert made with coffee, mascarpone cheese, and ladyfingers."
+          },
+          "ingredients": {
+            "description": "Ingredients for the recipe",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "amount"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the ingredient"
+                },
+                "amount": {
+                  "type": "string",
+                  "description": "The amount of the ingredient"
+                }
+              }
+            }
+          },
+          "steps": {
+            "description": "Steps for the recipe",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "description"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "A description of the step"
+                }
+              }
+            }
+          },
+          "cookingTime": {
+            "type": "number",
+            "description": "The cooking time in minutes",
+            "example": 30
+          },
+          "author": {
+            "type": "string",
+            "description": "The author of the recipe",
+            "example": "Chef Vegan"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the recipe was created",
+            "example": "2024-06-23T05:52:08.998Z"
+          },
+          "photo": {
+            "description": "Link to recipe's photo",
+            "type": "string",
+            "example": "https://res.cloudinary.com/uqwgdu/image/upload/image.png"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 400
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Something went wrong"
+                },
+                "error": {
+                  "type": "string",
+                  "example": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "message",
+                "data"
+              ],
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 401
+                },
+                "message": {
+                  "type": "string",
+                  "example": "UnauthorizedError"
+                },
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "message"
+                  ],
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Access token expired"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "integer",
+                  "example": 404
+                },
+                "message": {
+                  "type": "string",
+                  "example": "Not found error"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "description": "Error message",
+                      "type": "string",
+                      "example": "Contact not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Server Error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal Server Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
