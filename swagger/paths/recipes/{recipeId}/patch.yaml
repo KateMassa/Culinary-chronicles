@@ -124,6 +124,6 @@ responses:
               format: date-time
               example: '2024-06-23T05:52:08.998Z'
   '401':
-    $ref: '#/components/responses/Unauthorized'
+    $ref: '..\..\..\components\responses\401.yaml'
   '404':
-    $ref: '#/components/responses/NotFound'
+    $ref: '..\..\..\components\responses\404.yaml'

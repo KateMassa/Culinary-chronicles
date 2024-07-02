@@ -4,7 +4,7 @@ info:
   title: Cook-book App "Culinary chronicles"
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    url: <http://www.apache.org/licenses/LICENSE-2.0.html>
   description: >
     This is a documentation of cook-book app
 tags:
