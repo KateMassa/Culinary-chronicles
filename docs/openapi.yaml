@@ -4,7 +4,7 @@ info:
   title: Cook-book App "Culinary chronicles"
   license:
     name: Apache 2.0
-    url: <http://www.apache.org/licenses/LICENSE-2.0.html>
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
   description: >
     This is a documentation of cook-book app
 tags:
@@ -16,7 +16,7 @@ servers:
   - url: https://culinary-chronicles-88wp.onrender.com
 
 paths:
-   /auth/register:
+  /auth/register:
     post:
       $ref: '../swagger/paths/auth/register.yaml'
   /auth/login:
@@ -47,10 +47,9 @@ paths:
     delete:
       $ref: '../swagger/paths/recipes/{recipeId}/delete.yaml'
 components:
-   schemas:
+  schemas:
     Recipe:
       $ref: '../swagger/components/schemas/recipe.yaml'
- 
   securitySchemes:
     bearerAuth:
       type: http
