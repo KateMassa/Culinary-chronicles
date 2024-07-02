@@ -57,7 +57,8 @@ responses:
               type: string
               example: Successfully found Recipes!
             data:
-              type: object
-              $ref: '../../components/schemas/contact.yaml'
+              type: array
+              items:
+                $ref: '../../components/schemas/recipe.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'
