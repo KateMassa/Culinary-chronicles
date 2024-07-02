@@ -26,47 +26,47 @@ requestBody:
           description:
             description: "Recipe's description"
             type: string
-            example: "Brew 300 ml of coffee"
+            example: 'Brew 300 ml of coffee'
           ingredients:
-            description: "Ingredients for the recipe"
-            type: array
-              items:
-              type: object
-              required:
-               - name
-               - amount
-              properties:
-                name:
-                type: string
-                description: The name of the ingredient
-              amount:
-                type: string
-                description: The amount of the ingredient
-           steps:
-            description: "Steps for the recipe"
+            description: 'Ingredients for the recipe'
             type: array
             items:
               type: object
               required:
-              - description
+                - name
+                - amount
               properties:
-                description: A description of the step
-                type: string
-              
-            cookingTime:
-              type: number
-              description: The cooking time in minutes
-            author:
-               type: string
-               description: The author of the recipe
-            createdAt:
-               type: string
-               format: date-time
-               description: The date and time when the recipe was created
-            photo:
-               description: "Link to Contact's photo"
-               type: string
-               example: <https://res.cloudinary.com/uqwgdu/image/upload/image.png>
+                name:
+                  type: string
+                  description: The name of the ingredient
+                amount:
+                  type: string
+                  description: The amount of the ingredient
+          steps:
+            description: 'Steps for the recipe'
+            type: array
+            items:
+              type: object
+              required:
+                - description
+              properties:
+                description:
+                  type: string
+                  description: A description of the step
+          cookingTime:
+            type: number
+            description: The cooking time in minutes
+          author:
+            type: string
+            description: The author of the recipe
+          createdAt:
+            type: string
+            format: date-time
+            description: The date and time when the recipe was created
+          photo:
+            description: "Link to recipe's photo"
+            type: string
+            format: binary
 
 responses:
   '201':
